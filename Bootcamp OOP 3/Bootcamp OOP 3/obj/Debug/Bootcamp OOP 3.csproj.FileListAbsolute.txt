@@ -1,0 +1,2 @@
+C:\Users\62857\Documents\Visual Studio 2015\Projects\Bootcamp OOP 3\Bootcamp OOP 3\obj\Debug\Bootcamp OOP 3.csprojResolveAssemblyReference.cache
+C:\Users\62857\Documents\Visual Studio 2015\Projects\Bootcamp OOP 3\Bootcamp OOP 3\bin\Debug\Bootcamp OOP 3.exe.config

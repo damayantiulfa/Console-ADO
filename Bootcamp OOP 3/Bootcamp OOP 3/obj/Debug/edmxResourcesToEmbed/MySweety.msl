@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="yourDbModelStoreContainer" CdmEntityContainer="MyContext">
+    <EntitySetMapping Name="TB_M_Item">
+      <EntityTypeMapping TypeName="yourDbModel.TB_M_Item">
+        <MappingFragment StoreEntitySet="TB_M_Item">
+          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+          <ScalarProperty Name="Stock" ColumnName="Stock" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_Sell">
+      <EntityTypeMapping TypeName="yourDbModel.TB_M_Sell">
+        <MappingFragment StoreEntitySet="TB_M_Sell">
+          <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_M_Suppliers">
+      <EntityTypeMapping TypeName="yourDbModel.TB_M_Suppliers">
+        <MappingFragment StoreEntitySet="TB_M_Suppliers">
+          <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TB_T_Transactions">
+      <EntityTypeMapping TypeName="yourDbModel.TB_T_Transactions">
+        <MappingFragment StoreEntitySet="TB_T_Transactions">
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="FK_TB_M_Item_ToTable" TypeName="yourDbModel.FK_TB_M_Item_ToTable" StoreEntitySet="TB_M_Item">
+      <EndProperty Name="TB_M_Item">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <EndProperty Name="TB_M_Suppliers">
+        <ScalarProperty Name="Id" ColumnName="Suppliers_Id" />
+      </EndProperty>
+      <Condition ColumnName="Suppliers_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_TB_M_Sell_ToTable" TypeName="yourDbModel.FK_TB_M_Sell_ToTable" StoreEntitySet="TB_T_Transactions">
+      <EndProperty Name="TB_T_Transactions">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <EndProperty Name="TB_M_Item">
+        <ScalarProperty Name="Id" ColumnName="TB_M_Items_Item_id" />
+      </EndProperty>
+      <Condition ColumnName="TB_M_Items_Item_id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FK_TB_M_Sell" TypeName="yourDbModel.FK_TB_M_Sell" StoreEntitySet="TB_T_Transactions">
+      <EndProperty Name="TB_T_Transactions">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <EndProperty Name="TB_M_Sell">
+        <ScalarProperty Name="Id" ColumnName="TB_M_Sell_id" />
+      </EndProperty>
+      <Condition ColumnName="TB_M_Sell_id" IsNull="false" />
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

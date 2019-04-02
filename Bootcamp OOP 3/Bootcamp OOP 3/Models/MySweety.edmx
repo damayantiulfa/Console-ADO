@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="yourDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TB_M_Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Suppliers_Id" Type="int" />
+          <Property Name="Price" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="Stock" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="isDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_M_Sell">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="OrderDate" Type="date" />
+        </EntityType>
+        <EntityType Name="TB_M_Suppliers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="isDelete" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TB_T_Transactions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="TB_M_Items_Item_id" Type="int" />
+          <Property Name="TB_M_Sell_id" Type="int" />
+        </EntityType>
+        <Association Name="FK_TB_M_Item_ToTable">
+          <End Role="TB_M_Suppliers" Type="Self.TB_M_Suppliers" Multiplicity="0..1" />
+          <End Role="TB_M_Item" Type="Self.TB_M_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_M_Suppliers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TB_M_Item">
+              <PropertyRef Name="Suppliers_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_M_Sell">
+          <End Role="TB_M_Sell" Type="Self.TB_M_Sell" Multiplicity="0..1" />
+          <End Role="TB_T_Transactions" Type="Self.TB_T_Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_M_Sell">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TB_T_Transactions">
+              <PropertyRef Name="TB_M_Sell_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TB_M_Sell_ToTable">
+          <End Role="TB_M_Item" Type="Self.TB_M_Item" Multiplicity="0..1" />
+          <End Role="TB_T_Transactions" Type="Self.TB_T_Transactions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TB_M_Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TB_T_Transactions">
+              <PropertyRef Name="TB_M_Items_Item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="yourDbModelStoreContainer">
+          <EntitySet Name="TB_M_Item" EntityType="Self.TB_M_Item" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_M_Sell" EntityType="Self.TB_M_Sell" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_M_Suppliers" EntityType="Self.TB_M_Suppliers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TB_T_Transactions" EntityType="Self.TB_T_Transactions" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TB_M_Item_ToTable" Association="Self.FK_TB_M_Item_ToTable">
+            <End Role="TB_M_Suppliers" EntitySet="TB_M_Suppliers" />
+            <End Role="TB_M_Item" EntitySet="TB_M_Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_M_Sell" Association="Self.FK_TB_M_Sell">
+            <End Role="TB_M_Sell" EntitySet="TB_M_Sell" />
+            <End Role="TB_T_Transactions" EntitySet="TB_T_Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_M_Sell_ToTable" Association="Self.FK_TB_M_Sell_ToTable">
+            <End Role="TB_M_Item" EntitySet="TB_M_Item" />
+            <End Role="TB_T_Transactions" EntitySet="TB_T_Transactions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="yourDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MyContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TB_M_Item" EntityType="yourDbModel.TB_M_Item" />
+          <EntitySet Name="TB_M_Sell" EntityType="yourDbModel.TB_M_Sell" />
+          <EntitySet Name="TB_M_Suppliers" EntityType="yourDbModel.TB_M_Suppliers" />
+          <EntitySet Name="TB_T_Transactions" EntityType="yourDbModel.TB_T_Transactions" />
+          <AssociationSet Name="FK_TB_M_Item_ToTable" Association="yourDbModel.FK_TB_M_Item_ToTable">
+            <End Role="TB_M_Suppliers" EntitySet="TB_M_Suppliers" />
+            <End Role="TB_M_Item" EntitySet="TB_M_Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_M_Sell_ToTable" Association="yourDbModel.FK_TB_M_Sell_ToTable">
+            <End Role="TB_M_Item" EntitySet="TB_M_Item" />
+            <End Role="TB_T_Transactions" EntitySet="TB_T_Transactions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TB_M_Sell" Association="yourDbModel.FK_TB_M_Sell">
+            <End Role="TB_M_Sell" EntitySet="TB_M_Sell" />
+            <End Role="TB_T_Transactions" EntitySet="TB_T_Transactions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TB_M_Item">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Stock" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="isDelete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TB_M_Suppliers" Relationship="yourDbModel.FK_TB_M_Item_ToTable" FromRole="TB_M_Item" ToRole="TB_M_Suppliers" />
+          <NavigationProperty Name="TB_T_Transactions" Relationship="yourDbModel.FK_TB_M_Sell_ToTable" FromRole="TB_M_Item" ToRole="TB_T_Transactions" />
+        </EntityType>
+        <EntityType Name="TB_M_Sell">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="OrderDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="TB_T_Transactions" Relationship="yourDbModel.FK_TB_M_Sell" FromRole="TB_M_Sell" ToRole="TB_T_Transactions" />
+        </EntityType>
+        <EntityType Name="TB_M_Suppliers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isDelete" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TB_M_Item" Relationship="yourDbModel.FK_TB_M_Item_ToTable" FromRole="TB_M_Suppliers" ToRole="TB_M_Item" />
+        </EntityType>
+        <EntityType Name="TB_T_Transactions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="TB_M_Item" Relationship="yourDbModel.FK_TB_M_Sell_ToTable" FromRole="TB_T_Transactions" ToRole="TB_M_Item" />
+          <NavigationProperty Name="TB_M_Sell" Relationship="yourDbModel.FK_TB_M_Sell" FromRole="TB_T_Transactions" ToRole="TB_M_Sell" />
+        </EntityType>
+        <Association Name="FK_TB_M_Item_ToTable">
+          <End Type="yourDbModel.TB_M_Suppliers" Role="TB_M_Suppliers" Multiplicity="0..1" />
+          <End Type="yourDbModel.TB_M_Item" Role="TB_M_Item" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_TB_M_Sell_ToTable">
+          <End Type="yourDbModel.TB_M_Item" Role="TB_M_Item" Multiplicity="0..1" />
+          <End Type="yourDbModel.TB_T_Transactions" Role="TB_T_Transactions" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_TB_M_Sell">
+          <End Type="yourDbModel.TB_M_Sell" Role="TB_M_Sell" Multiplicity="0..1" />
+          <End Type="yourDbModel.TB_T_Transactions" Role="TB_T_Transactions" Multiplicity="*" />
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="yourDbModelStoreContainer" CdmEntityContainer="MyContext">
+          <EntitySetMapping Name="TB_M_Item">
+            <EntityTypeMapping TypeName="yourDbModel.TB_M_Item">
+              <MappingFragment StoreEntitySet="TB_M_Item">
+                <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+                <ScalarProperty Name="Stock" ColumnName="Stock" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_M_Sell">
+            <EntityTypeMapping TypeName="yourDbModel.TB_M_Sell">
+              <MappingFragment StoreEntitySet="TB_M_Sell">
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_M_Suppliers">
+            <EntityTypeMapping TypeName="yourDbModel.TB_M_Suppliers">
+              <MappingFragment StoreEntitySet="TB_M_Suppliers">
+                <ScalarProperty Name="isDelete" ColumnName="isDelete" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TB_T_Transactions">
+            <EntityTypeMapping TypeName="yourDbModel.TB_T_Transactions">
+              <MappingFragment StoreEntitySet="TB_T_Transactions">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="FK_TB_M_Item_ToTable" TypeName="yourDbModel.FK_TB_M_Item_ToTable" StoreEntitySet="TB_M_Item">
+            <EndProperty Name="TB_M_Item">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="TB_M_Suppliers">
+              <ScalarProperty Name="Id" ColumnName="Suppliers_Id" />
+            </EndProperty>
+            <Condition ColumnName="Suppliers_Id" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_TB_M_Sell_ToTable" TypeName="yourDbModel.FK_TB_M_Sell_ToTable" StoreEntitySet="TB_T_Transactions">
+            <EndProperty Name="TB_T_Transactions">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="TB_M_Item">
+              <ScalarProperty Name="Id" ColumnName="TB_M_Items_Item_id" />
+            </EndProperty>
+            <Condition ColumnName="TB_M_Items_Item_id" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_TB_M_Sell" TypeName="yourDbModel.FK_TB_M_Sell" StoreEntitySet="TB_T_Transactions">
+            <EndProperty Name="TB_T_Transactions">
+              <ScalarProperty Name="Id" ColumnName="Id" />
+            </EndProperty>
+            <EndProperty Name="TB_M_Sell">
+              <ScalarProperty Name="Id" ColumnName="TB_M_Sell_id" />
+            </EndProperty>
+            <Condition ColumnName="TB_M_Sell_id" IsNull="false" />
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
